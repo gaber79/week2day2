@@ -3,12 +3,17 @@
 <head>
 </head>
 <body>
-    <!-- Write EJS code here to display shortened links -->
-		<% include ../views/partials/_header %>
-    <ul>
-    			<% for(var url in urls) { %>
-    	    <li> <a href='<%= urls[url] %>'>  <%= url %> </a>- </li>
-            <% } %>
-    </ul>
+  <!-- Write EJS code here to display shortened links -->
+	<% include ../views/partials/_header %>
+  <ul class="body">
+		<% for(var url in urls) { %>
+    <li class="bodyLI">
+	    <form method="POST" action="/urls/<%= url %>/delete">
+	    	<a href='<%= urls[url] %>' style="font-size: 40px;">  <%= url %> </a> --> <%=  urls[url] %> 
+  	    <button type="submit" style="width: 100px; background: cyan;">Delete</button></li>
+	    </form>
+    </li>
+    <% } %>
+  </ul>
 </body>
 </html>

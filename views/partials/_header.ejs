@@ -1,3 +1,35 @@
 <!-- views/partials/_header.ejs -->
+<head>
+	<style>
+	ul.nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
 
-<header><h1>This is some crazy stuff!!!</h1> </header>
+li.navLI {
+    float: left;
+}
+
+li.navLI a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li.navLI a:hover {
+    background-color: grey;
+}
+
+	</style>
+</head>
+<header style="background:green;"><h1>This is some crazy stuff!!!</h1> </header>
+<ul class="nav">
+	<li class="navLI"><a href="http://localhost:8080/urls">LIST</a></li>
+	<li class="navLI"><a href="http://localhost:8080/urls/new">Add new link</a></li>
+</ul>

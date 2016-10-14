@@ -42,9 +42,13 @@ app.get("/u/:shortURL", (req, res) => {
 
 app.get("/urls/:id", (req, res) => {
   let templateVars = { shortURL: req.params.id };
-  res.render("urls_show", templateVars);
-  // let longValue = urlDatabase[shortURL]
+  res.redirect("urls_show", templateVars);
 });
+
+app.post("urls/:id/delete", (req, res) => {
+	delete urlDatabase.shortURL;
+	res.redirect("/urls");
+})
 
 
 app.post("/urls", (req, res) => {
