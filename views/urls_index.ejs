@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <!-- Write EJS code here to display shortened links -->
+		<% include ../views/partials/_header %>
+    <ul>
+    			<% for(var url in urls) { %>
+    	    <li> <a href='<%= urls[url] %>'>  <%= url %> </a>- </li>
+            <% } %>
+    </ul>
+</body>
+</html>
