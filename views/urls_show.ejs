@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<body>
+<body style="font-size:20px; padding:20px;">
 <% include ../views/partials/_header %>
-   
-    <%= shortURL %> - 
+    <form action="/urls/<%= shortURL %>" method="POST" style="margin:20px;">
+	   <h1>ShortURL: - <%= shortURL %> </h1>  <br/>
+	   <p>Goes to: <%= longURL %></p> <br/>
+	   <p>Put in a new address below to update the shortURL to.</p>
+      <input id="longURL" type="text" name="longURL" value="<%= longURL %>" placeholder="http://" style="width: 300px">
+      <input type="submit" value="Update">
+    </form>
 </body>
 </html>
 
