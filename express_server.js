@@ -1,39 +1,102 @@
 const express = require("express");
-const app = express();
 const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
+const app = express();
 const PORT = process.env.PORT || 8080; // default port 8080
+const cookieParser = require("cookie-parser");
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded( {
   extended: true
 }));
 
+// urlDatabse
 var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
 
+// userDatabase
+const data = {
+  users: [
+  {
+    username: "gaber", password: "testing"
+  }]
+};
 
+// Express middleware that parses cookies
+app.use(cookieParser("super_secret_key"));
+
+// home page
 app.get("/", (req, res) => {
-  res.end("Hello!");
+  // if user logged in show treasure,
+  // else show login
+  const current_user = req.signedCookies.current_user
+  if (current_user) {
+    res.redirect("/urls");
+  } else {
+    res.render("_login");
+  }
 });
 
-app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
+// signup page
+app.get("/signup", (req, res) => {
+  res.render("signup");
+})
+
+// signup post
+app.post("/signup", (req, res) => {
+  bcrypt.hash(req.body.password, 10, (err, hash) => {
+    if (err) {
+      res.send("There was an error creating your account")
+      return;
+    }
+    data.users.push({username: req.body.username, password: req.body.hash});
+    console.log("All users are: ", data.users)
+    res.redirect("/");
+  });
+})
+
+// login page
+app.get("/login", (req,res) => {
+  res.render("_login");
 });
 
-app.get("/hello", (req, res) => {
-  res.end("<html><body>Hello <b>World</b></body></html>\n");
+
+// login post 
+app.post("/login", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  // find user by username
+  const user = data.users.find((user) => { return user.username === username});
+  //check the password
+  bcrypt.compare(password, user.password, (err, matched) => {
+    if (user.password === password) {
+      // set a cookie to keep track of user
+      res.cookie("current_user", user.username, { signed: true })
+      res.redirect("/urls")
+    } else {
+      res.redirect("/login")
+    }
+  });
 });
+
+// logout
+app.get("/logout", (req, res) => {
+  res.cookie("current_user", "", {signed: true})
+  res.redirect("/login")
+})
 
 // browse
 app.get("/urls", (req, res) => {
+  res.cookie("current_user", "", {signed: true});
   var templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
 });
 
 // create
 app.get("/urls/new", (req, res) => {
+  res.cookie("current_user", "", {signed: true});
   res.render("urls_new");
 });
 
@@ -45,6 +108,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 // show
 app.get("/urls/:id", (req, res) => {
+  res.cookie("current_user", "", {signed: true})
   let templateVars = { shortURL: req.params.id, longURL: urlDatabase[req.params.id] };
   res.render("urls_show", templateVars);
 });

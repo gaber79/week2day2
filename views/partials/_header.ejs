@@ -1,7 +1,7 @@
 <!-- views/partials/_header.ejs -->
 <head>
-	<style>
-	ul.nav {
+  <style>
+  ul.nav {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -26,10 +26,12 @@ li.navLI a:hover {
     background-color: grey;
 }
 
-	</style>
+  </style>
 </head>
 <header style="background:green;"><h1>This is some crazy stuff!!!</h1> </header>
 <ul class="nav">
-	<li class="navLI"><a href="http://localhost:8080/urls">LIST</a></li>
-	<li class="navLI"><a href="http://localhost:8080/urls/new">Add new link</a></li>
+  <li class="navLI"><a href="http://localhost:8080/urls">LIST</a></li>
+  <li class="navLI"><a href="http://localhost:8080/urls/new">Add new link</a></li>
+  <li class="navLI"><a href="http://localhost:8080/login">Login</a></li>
+  <li class="navLI"> <%= current_user %></li>
 </ul>
