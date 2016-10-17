@@ -32,6 +32,11 @@ li.navLI a:hover {
 <ul class="nav">
   <li class="navLI"><a href="http://localhost:8080/urls">LIST</a></li>
   <li class="navLI"><a href="http://localhost:8080/urls/new">Add new link</a></li>
+  <% if (username) { %>
+  <li class="navLI">User: <%= username %> <form action="/logout" method="POST">
+    <input type="submit" value="logout">
+  </form></li>
+  <% } else { %>
   <li class="navLI"><a href="http://localhost:8080/login">Login</a></li>
-  <li class="navLI"> <%= current_user %></li>
+  <% } %>
 </ul>
