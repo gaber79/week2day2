@@ -58,7 +58,7 @@ app.post("/signup", (req, res) => {
       return;
     }
     data.users.push({username: req.body.username, password: req.body.hash});
-    console.log("All users are: ", data.users)
+    // console.log("All users are: ", data.users)
     res.redirect("/");
   });
 })
@@ -92,6 +92,12 @@ app.get("/logout", (req, res) => {
   res.clearCookie("username");
   res.redirect("/login")
 })
+
+// logout post
+app.post("/logout", (req, res) => {
+  res.clearCookie("username");
+  res.redirect("/login");
+});
 
 // browse
 app.get("/urls", (req, res) => {
