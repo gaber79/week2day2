@@ -33,7 +33,7 @@ li.navLI a:hover {
   <li class="navLI"><a href="http://localhost:8080/urls">LIST</a></li>
   <li class="navLI"><a href="http://localhost:8080/urls/new">Add new link</a></li>
   <% if (email) { %>
-  <li class="navLI">User: <%= email %> <form action="/logout" method="POST">
+  <li class="navLI" style="color: white;">User: <%= email %> <form action="/logout" method="POST">
     <input type="submit" value="logout">
   </form></li>
   <% } else { %>
