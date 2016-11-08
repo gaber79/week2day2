@@ -12,8 +12,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // urlDatabase
 var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": { url: "http://www.lighthouselabs.ca"},
+  "9sm5xK": { url: "http://www.google.com" }
 };
 
 // userDatabase
@@ -45,7 +45,11 @@ app.use(cookieSession({
 
 // home page
 app.get("/", (req, res) => {
-    res.render("_login");
+  if (!req.session.email) {
+    res.redirect("/login");
+  } else {
+    res.redirect("/urls")
+  }
 });
 
 
@@ -96,7 +100,11 @@ app.post("/register", (req, res) => {
 
 // login page
 app.get("/login", (req,res) => {
+  if (req.session.email) {
+    res.redirect("/")
+  } else {
   res.render("_login");
+  }
 });
 
 
@@ -162,14 +170,23 @@ app.get("/urls/new", (req, res) => {
 
 // create post
 app.post("/urls", (req, res) => {
+  for (shorturl in urlDatabase) {
+
+    if (req.body.longURL === urlDatabase[shorturl].url) {
+      return res.render("urls_show", (err, html) => {
+        res.send('<p>The url entered is already shortened. Please go back and enter a new URL. <a href="/urls/new">Back</a> </p>');
+      })
+    // } else {
+    }
+  }
+
 
   var shortURL = generateRandomString();
   var longURL = req.body.longURL;
 
   urlDatabase[shortURL] = {url: longURL, email: req.session.email};
-  console.log(urlDatabase)
+  // console.log(urlDatabase)
 
-  // users[user].shortURL = longURL
   res.redirect("/urls/" + shortURL);
 })
 
@@ -186,7 +203,7 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/urls/:id", (req, res) => {
   
   let templateVars = { shortURL: req.params.id, 
-    longURL: urlDatabase[req.params.id],
+    longURL: urlDatabase[req.params.id].url,
     email: req.session.email };
   res.render("urls_show", templateVars);
 });
